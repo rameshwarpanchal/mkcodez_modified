@@ -703,163 +703,87 @@ public class NorenApi {
         return var13;
     }
 
-    //    public void historicalData(String exchange, String token) {
-//        System.out.println("inside historical data method");
-//        System.out.println("exchange " + exchange + " token: " + token);
-//        try {
-//            int interval = 3;
-//            String urlString = "https://api.shoonya.com/NorenWClientTP/TPSeries";
-//            if (this.broker.equals("FLATTRADE")) {
-//                urlString = "https://piconnect.flattrade.in/PiConnectTP/TPSeries";
-//            }
-//
-//            System.out.println("********* api URL: " + urlString);
-//            LocalDate endDate = LocalDate.now();
-//            endDate = endDate.plusDays(1L);
-//            LocalDate startDate = endDate.minusDays(2L);
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-//            startDate.format(formatter);
-//            endDate.format(formatter);
-//            System.out.println("start date: " + startDate.format(formatter));
-//            System.out.println("start date: " + endDate.format(formatter));
-//            JSONObject values = new JSONObject();
-//            values.put("ordersource", "API");
-//            values.put("uid", this.userName);
-//            values.put("exch", exchange);
-//            values.put("token", token);
-//            values.put("st", "" + startDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond());
-//            values.put("et", "" + endDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond());
-//            values.put("intrv", "" + interval);
-//            String var10000 = values.toString();
-//            String payload = "jData=" + var10000 + "&jKey=" + this.suserToken;
-//            System.out.println("Payload: " + payload);
-//            URL url = new URL(urlString);
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//            conn.setRequestMethod("POST");
-//            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//            conn.setDoOutput(true);
-//            OutputStream os = conn.getOutputStream();
-//
-//            try {
-//                os.write(payload.getBytes());
-//                os.flush();
-//            } catch (Throwable var21) {
-//                if (os != null) {
-//                    try {
-//                        os.close();
-//                    } catch (Throwable var20) {
-//                        var21.addSuppressed(var20);
-//                    }
-//                }
-//
-//                throw var21;
-//            }
-//
-//            if (os != null) {
-//                os.close();
-//            }
-//
-//            int responseCode = conn.getResponseCode();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//
-//            try {
-//                StringBuilder response = new StringBuilder();
-//
-//                String line;
-//                while ((line = br.readLine()) != null) {
-//                    response.append(line);
-//                }
-//
-//                JSONArray responseJson = new JSONArray(response.toString());
-//                System.out.println("Token:: " + token + " response full :: " + responseJson.toString());
-//                System.out.println("--------------------------------------------------------------------");
-//                this.hisData.put(token, responseJson);
-//            } catch (Throwable var22) {
-//                try {
-//                    br.close();
-//                } catch (Throwable var19) {
-//                    var22.addSuppressed(var19);
-//                }
-//
-//                throw var22;
-//            }
-//
-//            br.close();
-//        } catch (Exception var23) {
-//            var23.printStackTrace();
-//        }
-//
-//    }
+    // below original code
     public void historicalData(String exchange, String token) {
-        System.out.println("📈 Inside historicalData method for exchange: " + exchange + ", token: " + token);
-
         try {
-            int interval = 3;
+            int interval = 1;
+            String urlString = "https://api.shoonya.com/NorenWClientTP/TPSeries";
+            if (this.broker.equals("FLATTRADE")) {
+                urlString = "https://piconnect.flattrade.in/PiConnectTP/TPSeries";
+            }
 
-            // Prepare API URL
-            String urlString = broker.equals("FLATTRADE")
-                    ? "https://piconnect.flattrade.in/PiConnectTP/TPSeries"
-                    : "https://api.shoonya.com/NorenWClientTP/TPSeries";
-            System.out.println("🔗 API URL: " + urlString);
-
-            // Prepare start and end dates
-            LocalDate endDate = LocalDate.now().plusDays(1);  // End date is tomorrow
-            LocalDate startDate = endDate.minusDays(2);       // Start date is two days ago
+            System.out.println("URL: " + urlString);
+            LocalDate endDate = LocalDate.now();
+            endDate = endDate.plusDays(1L);
+            LocalDate startDate = endDate.minusDays(6L);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-            System.out.println("📅 Start Date: " + startDate.format(formatter));
-            System.out.println("📅 End Date: " + endDate.format(formatter));
-
-            // Create request payload
+            startDate.format(formatter);
+            endDate.format(formatter);
             JSONObject values = new JSONObject();
             values.put("ordersource", "API");
-            values.put("uid", userName);
+            values.put("uid", this.userName);
             values.put("exch", exchange);
             values.put("token", token);
-            values.put("st", String.valueOf(startDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond()));
-            values.put("et", String.valueOf(endDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond()));
-            values.put("intrv", String.valueOf(interval));
-
-            String payload = "jData=" + values.toString() + "&jKey=" + suserToken;
-            System.out.println("📝 Payload: " + payload);
-
-            // Send HTTP POST request
-            HttpURLConnection conn = (HttpURLConnection) new URL(urlString).openConnection();
+            values.put("st", "" + startDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond());
+            values.put("et", "" + endDate.atStartOfDay(ZoneOffset.UTC).toEpochSecond());
+            values.put("intrv", "" + interval);
+            String var10000 = values.toString();
+            String payload = "jData=" + var10000 + "&jKey=" + this.suserToken;
+            System.out.println("Payload: " + payload);
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.setDoOutput(true);
+            OutputStream os = conn.getOutputStream();
 
-            try (OutputStream os = conn.getOutputStream()) {
+            try {
                 os.write(payload.getBytes());
                 os.flush();
+            } catch (Throwable var21) {
+                if (os != null) {
+                    try {
+                        os.close();
+                    } catch (Throwable var20) {
+                        var21.addSuppressed(var20);
+                    }
+                }
+
+                throw var21;
+            }
+
+            if (os != null) {
+                os.close();
             }
 
             int responseCode = conn.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
-                System.err.println("❗ Failed to fetch historical data. Response code: " + responseCode);
-                return;
-            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
-            // Read the response
-            StringBuilder responseBuilder = new StringBuilder();
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            try {
+                StringBuilder response = new StringBuilder();
+
                 String line;
-                while ((line = br.readLine()) != null) {
-                    responseBuilder.append(line);
+                while((line = br.readLine()) != null) {
+                    response.append(line);
                 }
+
+                JSONArray responseJson = new JSONArray(response.toString());
+                this.hisData.put(token, responseJson);
+            } catch (Throwable var22) {
+                try {
+                    br.close();
+                } catch (Throwable var19) {
+                    var22.addSuppressed(var19);
+                }
+
+                throw var22;
             }
 
-            JSONArray responseJson = new JSONArray(responseBuilder.toString());
-            System.out.println("📦 Received historical data for token " + token + ": " + responseJson);
-            System.out.println("--------------------------------------------------------------------");
-
-            // Save data
-            hisData.put(token, responseJson);
-
-        } catch (Exception e) {
-            System.err.println("❗ Exception in historicalData: " + e.getMessage());
-            e.printStackTrace();
+            br.close();
+        } catch (Exception var23) {
+            var23.printStackTrace();
         }
+
     }
 
 

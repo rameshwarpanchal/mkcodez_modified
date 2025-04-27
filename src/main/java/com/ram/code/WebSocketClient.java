@@ -185,8 +185,11 @@ public class WebSocketClient {
 
 
     private void updateHistoricalData(String token, JSONObject message) throws ParseException {
+        System.out.println("inside updateHistoricalData method");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.US);
+        System.out.println("will get historical data of token");
         JSONArray data = (JSONArray) this.api.hisData.get(token);
+        System.out.println("got historical data of token");
         if (data != null && data.length() != 0) {
             JSONObject arr = data.getJSONObject(0);
             Date d2 = sdf.parse(arr.getString("time"));
@@ -547,102 +550,105 @@ public class WebSocketClient {
         System.out.println("end of subscribe method which take list of instruments and send to websocket");
     }
 
-    //    public void checkHisdata() {
-//        System.out.println("********* inside of check Historical Data method  *************");
-//        try {
-//            Iterator var1 = this.api.indexToken.entrySet().iterator();
-//            this.api.indexToken.forEach((x,y)-> System.out.println(x +" : "+y));
-//
-//            Map.Entry entry;
-//            while(var1.hasNext()) {
-//                entry = (Map.Entry)var1.next();
-//                Map<String, String> innerMap = (Map)entry.getValue();
-//                if (this.api.hisData.get(innerMap.get("token")) == null) {
-//                    System.out.println((String)entry.getKey());
-//                    System.out.println("---------------------------------------------------------");
-//                    System.out.println("sending call to historical data method when token is null: ");
-//                    this.api.historicalData((String)innerMap.get("exch"), (String)innerMap.get("token"));
-//                }
-//            }
-//
-//            var1 = this.api.allTokens.entrySet().iterator();
-//            System.out.println("All Tookens ---**********");
-//
-//            this.api.allTokens.forEach((x,y)-> System.out.println(x +" : "+y));
-//
-//            while(var1.hasNext()) {
-//                entry = (Map.Entry)var1.next();
-//                System.out.println("strike :: "+(String)entry.getKey());
-//                String key = (String)entry.getKey();
-//                String value = (String)entry.getValue();
-//                String exch = "NFO";
-//                if (key.contains("SENSEX")) {
-//                    exch = "BFO";
-//                }
-//
-//                if (this.api.hisData.get(value) == null) {
-//                    System.out.println("---------------------------------------------------------");
-//                    System.out.println("sending call to historical data method : "+ exch + " " + value );
-//                    this.api.historicalData(exch, value);
-//                }
-//            }
-//            System.out.println("printing historical data map");
-//            this.api.hisData.forEach((a,b)-> System.out.println(a +" "+ b.toString()));
-//            System.out.println("********* end of check Historical Data method  *************");
-//
-//        } catch (Exception var6) {
-//        }
-//
-//    }
-    public void checkHisdata() {
-        System.out.println("********* Inside checkHisData method *************");
-
+        public void checkHisdata() {
+        System.out.println("********* inside of check Historical Data method  *************");
         try {
-            // Check indexToken entries
-            System.out.println("Index Tokens:");
-            for (Map.Entry<String, Map<String, String>> entry : api.indexToken.entrySet()) {
-                String indexName = entry.getKey();
-                Map<String, String> innerMap = entry.getValue();
-                System.out.println(indexName + " : " + innerMap);
+            Iterator var1 = this.api.indexToken.entrySet().iterator();
+            this.api.indexToken.forEach((x,y)-> System.out.println(x +" : "+y));
 
-                String token = innerMap.get("token");
-                String exch = innerMap.get("exch");
-
-                if (token != null && !api.hisData.containsKey(token)) {
+            Map.Entry entry;
+            while(var1.hasNext()) {
+                entry = (Map.Entry)var1.next();
+                Map<String, String> innerMap = (Map)entry.getValue();
+                if (this.api.hisData.get(innerMap.get("token")) == null) {
+                    System.out.println((String)entry.getKey());
                     System.out.println("---------------------------------------------------------");
-                    System.out.println("Requesting historical data for Index: " + indexName + ", Token: " + token);
-                    api.historicalData(exch, token);
+                    System.out.println("sending call to historical data method when token is null: ");
+                    this.api.historicalData((String)innerMap.get("exch"), (String)innerMap.get("token"));
                 }
             }
 
-            // Check allTokens entries
-            System.out.println("\nAll Option Tokens:");
-            for (Map.Entry<String, String> entry : api.allTokens.entrySet()) {
-                String strikeName = entry.getKey();
-                String token = entry.getValue();
+            var1 = this.api.allTokens.entrySet().iterator();
+            System.out.println("All Tookens ---**********");
 
-                System.out.println("Strike: " + strikeName);
+            this.api.allTokens.forEach((x,y)-> System.out.println(x +" : "+y));
 
-                String exch = strikeName.contains("SENSEX") ? "BFO" : "NFO";
+            while(var1.hasNext()) {
+                entry = (Map.Entry)var1.next();
+                System.out.println("strike :: "+(String)entry.getKey());
+                String key = (String)entry.getKey();
+                String value = (String)entry.getValue();
+                String exch = "NFO";
+                if (key.contains("SENSEX")) {
+                    exch = "BFO";
+                }
 
-                if (token != null && !api.hisData.containsKey(token)) {
+                if (this.api.hisData.get(value) == null) {
                     System.out.println("---------------------------------------------------------");
-                    System.out.println("Requesting historical data for Strike: " + strikeName + ", Token: " + token);
-                    api.historicalData(exch, token);
+                    System.out.println("sending call to historical data method : "+ exch + " " + value );
+                    this.api.historicalData(exch, value);
                 }
             }
+            System.out.println("printing historical data map");
+            this.api.hisData.forEach((a,b)-> System.out.println(a +" "+ b.toString()));
+            System.out.println("********* end of check Historical Data method  *************");
 
-            // Print final hisData
-            System.out.println("\nHistorical Data Map:");
-            api.hisData.forEach((token, data) -> System.out.println(token + " -> " + data));
-
-        } catch (Exception e) {
-            System.err.println("Error occurred in checkHisData: " + e.getMessage());
-            e.printStackTrace(); // This will help you find bugs
+        } catch (Exception var6) {
         }
 
-        System.out.println("********* End of checkHisData method *************");
     }
+
+
+    // chat gpt code for checkHisdata method
+//    public void checkHisdata() {
+//        System.out.println("********* Inside checkHisData method *************");
+//
+//        try {
+//            // Check indexToken entries
+//            System.out.println("Index Tokens:");
+//            for (Map.Entry<String, Map<String, String>> entry : api.indexToken.entrySet()) {
+//                String indexName = entry.getKey();
+//                Map<String, String> innerMap = entry.getValue();
+//                System.out.println(indexName + " : " + innerMap);
+//
+//                String token = innerMap.get("token");
+//                String exch = innerMap.get("exch");
+//
+//                if (token != null && !api.hisData.containsKey(token)) {
+//                    System.out.println("---------------------------------------------------------");
+//                    System.out.println("Requesting historical data for Index: " + indexName + ", Token: " + token);
+//                    api.historicalData(exch, token);
+//                }
+//            }
+//
+//            // Check allTokens entries
+//            System.out.println("\nAll Option Tokens:");
+//            for (Map.Entry<String, String> entry : api.allTokens.entrySet()) {
+//                String strikeName = entry.getKey();
+//                String token = entry.getValue();
+//
+//                System.out.println("Strike: " + strikeName);
+//
+//                String exch = strikeName.contains("SENSEX") ? "BFO" : "NFO";
+//
+//                if (token != null && !api.hisData.containsKey(token)) {
+//                    System.out.println("---------------------------------------------------------");
+//                    System.out.println("Requesting historical data for Strike: " + strikeName + ", Token: " + token);
+//                    api.historicalData(exch, token);
+//                }
+//            }
+//
+//            // Print final hisData
+//            System.out.println("\nHistorical Data Map:");
+//            api.hisData.forEach((token, data) -> System.out.println(token + " -> " + data));
+//
+//        } catch (Exception e) {
+//            System.err.println("Error occurred in checkHisData: " + e.getMessage());
+//            e.printStackTrace(); // This will help you find bugs
+//        }
+//
+//        System.out.println("********* End of checkHisData method *************");
+//    }
 
 
     public void processPnl(String token, double lpValue) {

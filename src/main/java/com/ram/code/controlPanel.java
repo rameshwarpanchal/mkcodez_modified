@@ -998,166 +998,168 @@ public class controlPanel extends JFrame {
         this.setLocationRelativeTo((Component) null);
     }
 
-    //    private void jButton1ActionPerformed(ActionEvent evt) {
-//        System.out.println("** inside jButton1ActionPerformed method********");
-//        while(this.optionModel.getRowCount() > 0) {
-//            this.optionModel.removeRow(0);
-//        }
-//
-//        this.tokenMap = new HashMap();
-//        this.api.ws.tokenMap = this.tokenMap;
-//        String index = this.jComboBox1.getSelectedItem().toString();
-//        index = index.split(" ")[0];
-//        this.expiry = (String)((List)this.api.expiries.get(index)).get(this.jComboBox2.getSelectedIndex());
-//        int modulas = (Integer)this.api.modulas.get(index);
-//        int count = (Integer)this.jSpinner1.getValue() / 2;
-//        String instruments = "";
-//        this.currIndex = index;
-//        Map<String, String> niftyMap = (Map)this.indexToken.get(index);
-//        if (niftyMap != null) {
-//            String token = (String)niftyMap.get("token");
-//            this.currToken = token;
-//            String exch = (String)niftyMap.get("exch");
-//            if (this.extractedData.containsKey(token)) {
-//                double ltp = (Double)this.extractedData.get(token);
-//                int LTP = (int)(Math.round(ltp / (double)modulas) * (long)modulas);
-//                LTP -= modulas * count;
-//                int Strike = LTP;
-//
-//                for(int i = 0; i < count * 2; ++i) {
-//                    this.optionModel.addRow(new Object[]{"0", "0", "BUY", "SELL", Strike, "0", "BUY", "SELL", "0"});
-//                    String ceStrike;
-//                    String peStrike;
-//                    if (exch.equals("NSE")) {
-//                        ceStrike = index + this.expiry + "C" + Strike;
-//                        peStrike = index + this.expiry + "P" + Strike;
-//                    } else {
-//                        ceStrike = index + this.expiry + Strike + "CE";
-//                        peStrike = index + this.expiry + Strike + "PE";
-//                    }
-//
-//                    try {
-//                        String tempExch = exch.charAt(0) + "FO";
-//                        JSONObject jo = this.api.oHandler.searchOption(tempExch, ceStrike);
-//                        String token1 = jo.getString("token");
-//                        jo = this.api.oHandler.searchOption(tempExch, peStrike);
-//                        String token2 = jo.getString("token");
-//                        this.allTokens.put(ceStrike, token1);
-//                        this.allTokens.put(peStrike, token2);
-//                        if (!instruments.equals("")) {
-//                            instruments = instruments + "#" + tempExch + "|" + token1;
-//                            instruments = instruments + "#" + tempExch + "|" + token2;
-//                        } else {
-//                            instruments = tempExch + "|" + token1;
-//                            instruments = instruments + "#" + tempExch + "|" + token2;
-//                        }
-//
-//                        this.tokenMap.put(token1, new int[]{i, 1});
-//                        this.tokenMap.put(token2, new int[]{i, 5});
-//                    } catch (IOException var20) {
-//                        Logger.getLogger(controlPanel.class.getName()).log(Level.SEVERE, (String)null, var20);
-//                    }
-//
-//                    Strike += modulas;
-//                }
-//
-//                if (!instruments.equals("")) {
-//                    System.out.println(" sending instruments from jButton1ActionPerformed method: instruments : "+instruments);
-//                    System.out.println("calling subscribe metthod which takes instruments from jButton1ActionPerformed method");
-//                    this.api.ws.subscribe(instruments);
-//                }
-//            }
-//        }
-//
-//    }
-    private void jButton1ActionPerformed(ActionEvent evt) {
-        System.out.println("** Inside jButton1ActionPerformed method **");
-
-        // Clear existing data
-        optionModel.setRowCount(0);
-        tokenMap.clear();
-        api.ws.tokenMap = tokenMap;
-
-        // Get selected index and expiry
-        String selectedIndex = jComboBox1.getSelectedItem().toString();
-        String baseIndex = selectedIndex.split(" ")[0];
-        expiry = (String) ((List<?>) api.expiries.get(baseIndex)).get(jComboBox2.getSelectedIndex());
-        int strikeStep = (Integer) api.modulas.get(baseIndex);
-        int strikesToDisplay = (Integer) jSpinner1.getValue();
-        int strikesHalf = strikesToDisplay / 2;
-        currIndex = baseIndex;
-
-        // Prepare index details
-        Map<String, String> indexDetails = (Map<String, String>) indexToken.get(baseIndex);
-        if (indexDetails == null) {
-            System.out.println("Index details not found for: " + baseIndex);
-            return;
+        private void jButton1ActionPerformed(ActionEvent evt) {
+        System.out.println("** inside jButton1ActionPerformed method********");
+        while(this.optionModel.getRowCount() > 0) {
+            this.optionModel.removeRow(0);
         }
 
-        currToken = indexDetails.get("token");
-        String exchange = indexDetails.get("exch");
+        this.tokenMap = new HashMap();
+        this.api.ws.tokenMap = this.tokenMap;
+        String index = this.jComboBox1.getSelectedItem().toString();
+        index = index.split(" ")[0];
+        this.expiry = (String)((List)this.api.expiries.get(index)).get(this.jComboBox2.getSelectedIndex());
+        int modulas = (Integer)this.api.modulas.get(index);
+        int count = (Integer)this.jSpinner1.getValue() / 2;
+        String instruments = "";
+        this.currIndex = index;
+        Map<String, String> niftyMap = (Map)this.indexToken.get(index);
+        if (niftyMap != null) {
+            String token = (String)niftyMap.get("token");
+            this.currToken = token;
+            String exch = (String)niftyMap.get("exch");
+            if (this.extractedData.containsKey(token)) {
+                double ltp = (Double)this.extractedData.get(token);
+                int LTP = (int)(Math.round(ltp / (double)modulas) * (long)modulas);
+                LTP -= modulas * count;
+                int Strike = LTP;
 
-        if (!extractedData.containsKey(currToken)) {
-            System.out.println("No extracted data found for token: " + currToken);
-            return;
-        }
+                for(int i = 0; i < count * 2; ++i) {
+                    this.optionModel.addRow(new Object[]{"0", "0", "BUY", "SELL", Strike, "0", "BUY", "SELL", "0"});
+                    String ceStrike;
+                    String peStrike;
+                    if (exch.equals("NSE")) {
+                        ceStrike = index + this.expiry + "C" + Strike;
+                        peStrike = index + this.expiry + "P" + Strike;
+                    } else {
+                        ceStrike = index + this.expiry + Strike + "CE";
+                        peStrike = index + this.expiry + Strike + "PE";
+                    }
 
-        double currentLTP = (Double) extractedData.get(currToken);
-        int roundedLTP = (int) (Math.round(currentLTP / (double) strikeStep) * strikeStep);
-        int startStrike = roundedLTP - (strikeStep * strikesHalf);
-        int currentStrike = startStrike;
+                    try {
+                        String tempExch = exch.charAt(0) + "FO";
+                        JSONObject jo = this.api.oHandler.searchOption(tempExch, ceStrike);
+                        String token1 = jo.getString("token");
+                        jo = this.api.oHandler.searchOption(tempExch, peStrike);
+                        String token2 = jo.getString("token");
+                        this.allTokens.put(ceStrike, token1);
+                        this.allTokens.put(peStrike, token2);
+                        if (!instruments.equals("")) {
+                            instruments = instruments + "#" + tempExch + "|" + token1;
+                            instruments = instruments + "#" + tempExch + "|" + token2;
+                        } else {
+                            instruments = tempExch + "|" + token1;
+                            instruments = instruments + "#" + tempExch + "|" + token2;
+                        }
 
-        String tempExchangeCode = exchange.charAt(0) + "FO";
-        StringBuilder instrumentsBuilder = new StringBuilder();
+                        this.tokenMap.put(token1, new int[]{i, 1});
+                        this.tokenMap.put(token2, new int[]{i, 5});
+                    } catch (IOException var20) {
+                        Logger.getLogger(controlPanel.class.getName()).log(Level.SEVERE, (String)null, var20);
+                    }
 
-        for (int i = 0; i < strikesToDisplay; ++i) {
-            // Add new row to table
-            optionModel.addRow(new Object[]{"0", "0", "BUY", "SELL", currentStrike, "0", "BUY", "SELL", "0"});
+                    Strike += modulas;
+                }
 
-            // Prepare call and put option symbols
-            String callOptionSymbol;
-            String putOptionSymbol;
-            if ("NSE".equals(exchange)) {
-                callOptionSymbol = baseIndex + expiry + "C" + currentStrike;
-                putOptionSymbol = baseIndex + expiry + "P" + currentStrike;
-            } else {
-                callOptionSymbol = baseIndex + expiry + currentStrike + "CE";
-                putOptionSymbol = baseIndex + expiry + currentStrike + "PE";
+                if (!instruments.equals("")) {
+                    System.out.println(" sending instruments from jButton1ActionPerformed method: instruments : "+instruments);
+                    System.out.println("calling subscribe metthod which takes instruments from jButton1ActionPerformed method");
+                    this.api.ws.subscribe(instruments);
+                }
             }
-
-            try {
-                // Search tokens for CE and PE
-                JSONObject callOptionData = api.oHandler.searchOption(tempExchangeCode, callOptionSymbol);
-                String callOptionToken = callOptionData.getString("token");
-
-                JSONObject putOptionData = api.oHandler.searchOption(tempExchangeCode, putOptionSymbol);
-                String putOptionToken = putOptionData.getString("token");
-
-                allTokens.put(callOptionSymbol, callOptionToken);
-                allTokens.put(putOptionSymbol, putOptionToken);
-
-                instrumentsBuilder.append(tempExchangeCode).append("|").append(callOptionToken).append("#")
-                        .append(tempExchangeCode).append("|").append(putOptionToken).append("#");
-
-                tokenMap.put(callOptionToken, new int[]{i, 1});
-                tokenMap.put(putOptionToken, new int[]{i, 5});
-
-            } catch (IOException e) {
-                Logger.getLogger(controlPanel.class.getName()).log(Level.SEVERE, null, e);
-            }
-
-            currentStrike += strikeStep;
         }
 
-        // Subscribe to instruments
-        if (!instrumentsBuilder.isEmpty()) {
-            instrumentsBuilder.setLength(instrumentsBuilder.length() - 1); // Remove trailing '#'
-            String instrumentsToSubscribe = instrumentsBuilder.toString();
-            System.out.println("Sending instruments from jButton1ActionPerformed method: " + instrumentsToSubscribe);
-            System.out.println("Calling subscribe method with instruments from jButton1ActionPerformed method");
-            api.ws.subscribe(instrumentsToSubscribe);
-        }
     }
+
+    // chat gpt code for  jButton1ActionPerformed method
+//    private void jButton1ActionPerformed(ActionEvent evt) {
+//        System.out.println("** Inside jButton1ActionPerformed method **");
+//
+//        // Clear existing data
+//        optionModel.setRowCount(0);
+//        tokenMap.clear();
+//        api.ws.tokenMap = tokenMap;
+//
+//        // Get selected index and expiry
+//        String selectedIndex = jComboBox1.getSelectedItem().toString();
+//        String baseIndex = selectedIndex.split(" ")[0];
+//        expiry = (String) ((List<?>) api.expiries.get(baseIndex)).get(jComboBox2.getSelectedIndex());
+//        int strikeStep = (Integer) api.modulas.get(baseIndex);
+//        int strikesToDisplay = (Integer) jSpinner1.getValue();
+//        int strikesHalf = strikesToDisplay / 2;
+//        currIndex = baseIndex;
+//
+//        // Prepare index details
+//        Map<String, String> indexDetails = (Map<String, String>) indexToken.get(baseIndex);
+//        if (indexDetails == null) {
+//            System.out.println("Index details not found for: " + baseIndex);
+//            return;
+//        }
+//
+//        currToken = indexDetails.get("token");
+//        String exchange = indexDetails.get("exch");
+//
+//        if (!extractedData.containsKey(currToken)) {
+//            System.out.println("No extracted data found for token: " + currToken);
+//            return;
+//        }
+//
+//        double currentLTP = (Double) extractedData.get(currToken);
+//        int roundedLTP = (int) (Math.round(currentLTP / (double) strikeStep) * strikeStep);
+//        int startStrike = roundedLTP - (strikeStep * strikesHalf);
+//        int currentStrike = startStrike;
+//
+//        String tempExchangeCode = exchange.charAt(0) + "FO";
+//        StringBuilder instrumentsBuilder = new StringBuilder();
+//
+//        for (int i = 0; i < strikesToDisplay; ++i) {
+//            // Add new row to table
+//            optionModel.addRow(new Object[]{"0", "0", "BUY", "SELL", currentStrike, "0", "BUY", "SELL", "0"});
+//
+//            // Prepare call and put option symbols
+//            String callOptionSymbol;
+//            String putOptionSymbol;
+//            if ("NSE".equals(exchange)) {
+//                callOptionSymbol = baseIndex + expiry + "C" + currentStrike;
+//                putOptionSymbol = baseIndex + expiry + "P" + currentStrike;
+//            } else {
+//                callOptionSymbol = baseIndex + expiry + currentStrike + "CE";
+//                putOptionSymbol = baseIndex + expiry + currentStrike + "PE";
+//            }
+//
+//            try {
+//                // Search tokens for CE and PE
+//                JSONObject callOptionData = api.oHandler.searchOption(tempExchangeCode, callOptionSymbol);
+//                String callOptionToken = callOptionData.getString("token");
+//
+//                JSONObject putOptionData = api.oHandler.searchOption(tempExchangeCode, putOptionSymbol);
+//                String putOptionToken = putOptionData.getString("token");
+//
+//                allTokens.put(callOptionSymbol, callOptionToken);
+//                allTokens.put(putOptionSymbol, putOptionToken);
+//
+//                instrumentsBuilder.append(tempExchangeCode).append("|").append(callOptionToken).append("#")
+//                        .append(tempExchangeCode).append("|").append(putOptionToken).append("#");
+//
+//                tokenMap.put(callOptionToken, new int[]{i, 1});
+//                tokenMap.put(putOptionToken, new int[]{i, 5});
+//
+//            } catch (IOException e) {
+//                Logger.getLogger(controlPanel.class.getName()).log(Level.SEVERE, null, e);
+//            }
+//
+//            currentStrike += strikeStep;
+//        }
+//
+//        // Subscribe to instruments
+//        if (!instrumentsBuilder.isEmpty()) {
+//            instrumentsBuilder.setLength(instrumentsBuilder.length() - 1); // Remove trailing '#'
+//            String instrumentsToSubscribe = instrumentsBuilder.toString();
+//            System.out.println("Sending instruments from jButton1ActionPerformed method: " + instrumentsToSubscribe);
+//            System.out.println("Calling subscribe method with instruments from jButton1ActionPerformed method");
+//            api.ws.subscribe(instrumentsToSubscribe);
+//        }
+//    }
 
 
     public List<Map<String, Object>> aggregateData(JSONArray jsonArray, int timeframe) throws ParseException {
