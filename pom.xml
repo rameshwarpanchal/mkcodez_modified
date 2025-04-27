@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>fyerstest1</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/com.eatthepath/java-otp -->
+        <dependency>
+            <groupId>com.eatthepath</groupId>
+            <artifactId>java-otp</artifactId>
+            <version>0.3.1</version>
+        </dependency>
+        <!-- Apache Commons Codec for Base32 decoding -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+
+        <!--        <dependency>-->
+        <!--            <groupId>com.tts.in</groupId>-->
+        <!--            <artifactId>fyersjavasdk</artifactId>-->
+        <!--            <version>1.0</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>${project.basedir}/repo/fyersjavasdk.jar</systemPath>-->
+        <!--        </dependency>-->
+                <dependency>
+                    <groupId>com.mycompany.mavenproject1.Mavenproject1</groupId>
+                    <artifactId>fyersjavasdk</artifactId>
+                    <version>1.0</version>
+                    <scope>system</scope>
+                    <systemPath>${project.basedir}/repo/mkScalper.jar</systemPath>
+                </dependency>
+        <!-- https://mvnrepository.com/artifact/com.squareup.okio/okio -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.2</version> <!-- Use latest available -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okio</groupId>
+            <artifactId>okio</artifactId>
+            <version>3.10.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.7</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>13</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.12.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.kwhat</groupId>
+            <artifactId>jnativehook</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.3</version> <!-- Use the latest version -->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.graalvm.js/js-scriptengine -->
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js-scriptengine</artifactId>
+            <version>24.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>24.1.2</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.openjdk.nashorn/nashorn-core -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.6</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.7.1</version>
+        </dependency>
+    </dependencies>
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>jitpack.io</id>-->
+    <!--            <url>https://jitpack.io</url>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+
+</project>

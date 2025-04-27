@@ -1,0 +1,23 @@
+{
+    "peTargetValue": 0,
+    "slTrail": false,
+    "peSlValue": 0,
+    "trgtTrail": false,
+    "lot1Pnl": false,
+    "ceSlValue": 0,
+    "exLimit": false,
+    "shortcut": false,
+    "paper": true,
+    "ceSl": false,
+    "pnlPoints": false,
+    "ceQty": 1,
+    "peQty": 1,
+    "enLimit": false,
+    "disColors": false,
+    "peSl": false,
+    "peTarget": false,
+    "buffer": 1,
+    "ceTargetValue": 0,
+    "trailValue": 0,
+    "ceTarget": false
+}
